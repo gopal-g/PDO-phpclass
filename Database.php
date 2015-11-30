@@ -1,32 +1,9 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
-  PDO_Methods
-  (
-  [0] => __construct
-  [1] => prepare
-  [2] => beginTransaction
-  [3] => commit
-  [4] => rollBack
-  [5] => inTransaction
-  [6] => setAttribute
-  [7] => exec
-  [8] => query
-  [9] => lastInsertId
-  [10] => errorCode
-  [11] => errorInfo
-  [12] => getAttribute
-  [13] => quote
-  [14] => __wakeup
-  [15] => __sleep
-  [16] => getAvailableDrivers
-  )
+/* Author   Blackburn027
+ * Class File  For Connecting to DB using PDO interface most secure and fastest way
+ * File Name - Database.php
+ * Class Name - To be Changed to myPDO / PDO
  */
 
 Class Database {
@@ -351,29 +328,3 @@ Class Database {
     }
 
 }
-
-/*Array
-(
-    [0] => execute
-    [1] => fetch
-    [2] => bindParam
-    [3] => bindColumn
-    [4] => bindValue
-    [5] => rowCount
-    [6] => fetchColumn
-    [7] => fetchAll
-    [8] => fetchObject
-    [9] => errorCode
-    [10] => errorInfo
-    [11] => setAttribute
-    [12] => getAttribute
-    [13] => columnCount
-    [14] => getColumnMeta
-    [15] => setFetchMode
-    [16] => nextRowset
-    [17] => closeCursor
-    [18] => debugDumpParams
-    [19] => __wakeup
-    [20] => __sleep
-)
-*/
