@@ -1,9 +1,12 @@
 <?php
 
-/* Author   Blackburn027
- * Class File  For Connecting to DB using PDO interface most secure and fastest way
- * File Name - Database.php
- * Class Name - To be Changed to myPDO / PDO
+//if (!defined('BASEPATH'))
+//    exit('No direct script access allowed');
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 
 Class Database {
@@ -81,20 +84,18 @@ Class Database {
 
     public
             function error_data($method = 'getMessage') {
-//        print_r($this->error);
         return $this->error->$method();
     }
 
     public
             function flush() {
-//        $this->error ='';
         $this->_result = '';
         $this->_query = '';
         $this->_data = array();
     }
 
     public
-            function composeSelect($table, $fields = array(), $conditions = array(), $options = array()) {
+            function composeSelect($table, $fields = array(), $conditions = array(), $sortOptions = array()) {
 
         if (!$table) {
             $this->error = 'Invalid DB Parameters';
@@ -105,7 +106,9 @@ Class Database {
 
         $cond = (empty($conditions)) ? '' : $this->buildConditions($conditions);
 
-        $this->_query = "SELECT " . $field . " FROM " . $table . " " . $cond;
+        $sort = (empty($sortOptions)) ? '' : $this->buildSortOption($sortOptions);
+
+        $this->_query = "SELECT " . $field . " FROM " . $table . " " . $cond . " " . $sort;
 
         return ($this->_query);
     }
@@ -141,6 +144,8 @@ Class Database {
         $valueset = $this->buildInsertValues($fields);
 
         $this->_query = 'INSERT INTO ' . $table . ' (' . $fieldset . ') VALUES (' . $valueset . ')';
+
+        return $this->_query;
     }
 
     public
@@ -266,9 +271,7 @@ Class Database {
     public
             function composeDelete($table, $conditions = array(), $options = array()) {
 
-//        $cond = $this->buildConditions($conditions);
-
-        $this->_query = 'DELETE  FROM ' . $table . ' WHERE ' . $this->buildConditions($conditions);
+        $this->_query = 'DELETE  FROM ' . $table . $this->buildConditions($conditions);
 
         return $this->_query;
     }
@@ -305,7 +308,9 @@ Class Database {
 
             $this->_data['rows'] = $this->_result->rowCount();
 
-            $this->_data['data'] = $this->_result->$method();
+            $fetchData = $this->_result->$method();
+
+            $this->_data['data'] = $fetchData ? $fetchData : [];
         }
 
 
@@ -325,6 +330,39 @@ Class Database {
     public
             function affected_rows() {
         return ($this->_result->rowCount());
+    }
+
+    /**/
+
+    private
+            function buildSortOption($optionSet = array()) {
+
+        $prep_array = array();
+        $sortStr = '';
+
+        if (!$optionSet) {
+            return '';
+        }
+
+        $sortStr = 'ORDER BY ';
+
+        foreach ($optionSet as $field => $order) {
+            $sortStr .= $field . " " . $order;
+        }
+
+        return $sortStr;
+    }
+
+    public
+            function result() {
+        return $this->_result;
+    }
+
+    /**/
+
+    public
+            function initateRawQuery($query = '') {
+        return $this->_query = $query;
     }
 
 }
