@@ -32,6 +32,9 @@ Class Database {
     public $error;
     public $_data = array();
     public $isConnected = FALSE;
+    public $limit = 0;
+    public $start = 1;
+    public $setLimit = false;
 
     /*
      * Construct which loads the db class with the supplied parameters
@@ -47,6 +50,7 @@ Class Database {
         $this->pass = $password;
         $this->db = $db;
         if (!$this->connect()) {
+            echo $this->error;
             http_response_code($this->error_data('getCode'));
         } else {
             $this->isConnected = TRUE;
@@ -111,6 +115,21 @@ Class Database {
         $this->_query = "SELECT " . $field . " FROM " . $table . " " . $cond . " " . $sort;
 
         return ($this->_query);
+    }
+
+    /**
+     * Function to limit the nimber of rows being selected
+     * @param type $start
+     * @param type $limit = 18446744073709551615 This is the maximum rows a MyISAM table can hold, 2^64-1.
+     * @return type
+     */
+    public
+            function setLimit($start = 0, $limit = 18446744073709551615) {
+        $this->setLimit = true;
+
+        $this->_query .= ' LIMIT ' . $start . ', ' . $limit;
+
+        return $this->_query;
     }
 
     private
